@@ -19,9 +19,9 @@ def NTRU(h, K, q):
 
     return IntegerLattice(block_matrix( [[1, H], [0, q]]), lll_reduce=True)
 
-def NTRU_subfield(hprime, q):
+def NTRU_subfield(hprime, q, nprime, r):
     a = hprime.parent().gen()
-    nprime = euler_phi(mprime)
+
     mat = []
     for i in range(nprime):
         coordinate = (hprime * a^(r*i)).vector().list()
@@ -77,17 +77,21 @@ def attack(m, q, r = 4, sigma = 3.0):
 
     print full_sv
 
-    ntru_subfield = NTRU_subfield(hprime, q)
+    ntru_subfield = NTRU_subfield(hprime, q, nprime, r)
     
-    sub_sv = ntru_sublfield.shortest_vector()
+    sub_sv = ntru_subfield.shortest_vector()
+    print sub_sv
     
-    xprime = sum([coerce(Integer, lv[i])*a^(r*i) for i in range(nprime)])
-    yprime = sum([coerce(Integer, lv[i+nprime])*a^(r*i) for i in range(nprime)] )
+    """
+    xprime = sum([coerce(Integer, sub_sv[i])*a^(r*i) for i in range(nprime)])
+    yprime = sum([coerce(Integer, sub_sv[i+nprime])*a^(r*i) for i in range(nprime)] )
     
+    print xprime
+    print yprime
     x = xprime 
-    hpp = inverse_mod(hprime, q*O)
+    hpp = inverse(hprime, q*O)
     y = mod_q(yprime*hpp*h, q)
-    
+    """
     return (f, g, h, fprime, gprime, hprime)
 
 
