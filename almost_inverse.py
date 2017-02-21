@@ -21,8 +21,6 @@ def inverse(a, m, q):
     if q.is_prime_power():
         (p, r) = q.perfect_power()
         res = inverse_p(a, m, p)
-        if r == 1:
-            return res
         if res[0]:
             b = res[1]
             x = a.parent().gen()
@@ -57,6 +55,7 @@ def almost_inverse(a, m):
             k = k+1
         if f.degree() == 0:
             k = Mod(-k, N)
+            b = (f[0]**(-1))*b
             res= (True, ((x**k)*b).mod(m))
 
             return res

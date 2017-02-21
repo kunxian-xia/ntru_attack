@@ -31,7 +31,7 @@ def NTRU_subfield(hprime, q, nprime, r):
     
     return IntegerLattice(block_matrix([ [1, Hprime], [0, q]]), lll_reduce=True)
 
-def attack(m, q, r = 4, sigma = 3.0):
+def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     K.<z> = CyclotomicField(m)
     R.<a> = ZZ['a']
     OK = K.ring_of_integers()
@@ -54,7 +54,7 @@ def attack(m, q, r = 4, sigma = 3.0):
             break
         
     g = sum([D()*z^i for i in range(n)])
-    
+
     #h = [g*f^{-1)]_q
     h = mod_q(g*f_inv, q)
     print "h = %s" % h
@@ -72,27 +72,24 @@ def attack(m, q, r = 4, sigma = 3.0):
     #(fprime, gprime) lies in the lattice \Lambda_hprime^q
     print "f'*h' - g' = %s (mod %d)" %( mod_q(hprime*fprime - gprime, q), q)
 
-    ntru_full = NTRU(h, K, q)
-    full_sv = ntru_full.shortest_vector()
-
-    print full_sv
+    if not subfield_only:
+        ntru_full = NTRU(h, K, q)
+        full_sv = ntru_full.shortest_vector()
+    
+        print "log |v| = %s" % log_b(full_sv.norm(), 2).n(precision)
 
     ntru_subfield = NTRU_subfield(hprime, q, nprime, r)
     
     sub_sv = ntru_subfield.shortest_vector()
     print sub_sv
     
-    """
-    xprime = sum([coerce(Integer, sub_sv[i])*a^(r*i) for i in range(nprime)])
-    yprime = sum([coerce(Integer, sub_sv[i+nprime])*a^(r*i) for i in range(nprime)] )
-    
-    print xprime
-    print yprime
-    x = xprime 
-    hpp = inverse(hprime, q*O)
-    y = mod_q(yprime*hpp*h, q)
-    """
-    return (f, g, h, fprime, gprime, hprime)
 
+    xprime = sum([coerce(Integer, sub_sv[i])*z^(r*i) for i in range(nprime)])
+    
+    x = xprime 
+    y = mod_q(x*h, q)
+    
+    print "log |(x,y)| = ", log_b( sqrt(x.vector().norm()^2 + y.vector().norm()^2), 2).n(precision)
+    return (x, y, f,g, h)
 
 # f,g is a small polynomial: each coefficient is either 0,1,-1
