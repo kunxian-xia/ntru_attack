@@ -8,10 +8,16 @@ precision = 20
 
 # elem is in O_K
 def mod_q(elem, q):
+    def half(a):
+        if a < q/2:
+	    return a
+ 	else:
+	    return a-q
+
     z = elem.parent().gen()
     n = len(elem.list())
     
-    return sum([mod(coerce(Integer, elem[i]), q).lift() * z^i for i in range(n)])
+    return sum([half(mod(coerce(Integer, elem[i]), q).lift()) * z^i for i in range(n)])
 
 def NTRU(h, K, q):
     basis = K.integral_basis()
@@ -57,9 +63,8 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
 
     #h = [g*f^{-1)]_q
     h = mod_q(g*f_inv, q)
-    print "h = %s" % h
-    print "f*h - g = %s" %mod_q(f*h-g, q)
 
+    print "f*h - g = %s" %mod_q(f*h-g, q)
     print "log q = ", log_b(q, 2).n(precision)
     print "log |(f,g)| = ", log_b(sqrt(f.vector().norm()^2 + g.vector().norm()^2), 2).n(precision)
     
@@ -83,7 +88,6 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     sub_sv = ntru_subfield.shortest_vector()
     print sub_sv
     
-
     xprime = sum([coerce(Integer, sub_sv[i])*z^(r*i) for i in range(nprime)])
     
     x = xprime 

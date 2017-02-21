@@ -36,6 +36,11 @@ def trace_attack(m, q, r):
     finv_no = norm(finv, Gprime)
     fbar = prod([tau(f) for tau in Gprime[1:] ])
 
+    #print fbar*g
+    print mod_q(trace(f, Gprime), r, z)
+    print mod_q(trace(g, Gprime), r, z)
+    #print mod_q(trace(fbar*g, Gprime), r, z)
+
     #assert fno*finv_no = 1 (mod q)
     print mod_q(fno*finv_no, q, z)
     
