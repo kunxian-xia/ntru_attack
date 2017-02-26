@@ -54,9 +54,12 @@ def almost_inverse(a, m):
             c = c*x
             k = k+1
         if f.degree() == 0:
-            k = Mod(-k, N)
-            b = (f[0]**(-1))*b
-            res= (True, ((x**k)*b).mod(m))
+            t = Mod(-k, N).lift()
+            s = (k+t)/N
+            b = (x**t)*(f[0]**(-1))*b
+            if Mod(s, 2).lift() == 1:
+                b = -b
+            res= (True, b.mod(m))
 
             return res
         if f.degree() < g.degree():
