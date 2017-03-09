@@ -69,8 +69,8 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
 
     print "f*h - g = %s" %  (f*h-g).mod(q)
     print "log q = ", log_b(q, 2).n(precision)
-    print "log |f| = %s, log |g| = %s", %( lognorm_f.n(precision), 
-                                            lognorm_g.n(precision) )
+    print "log |f| = %s, log |g| = %s" %( lognorm_f.n(precision), 
+                                         lognorm_g.n(precision) )
     print "log |(f,g)| = ", log_b(sqrt(f.vector().norm()^2 + g.vector().norm()^2), 2).n(precision)
     
     fprime = prod([tau(f) for tau in K.galois_group() if tau(z^r) == z^r])
