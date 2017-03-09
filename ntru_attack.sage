@@ -66,12 +66,14 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
 
     print "f*h - g = %s" %mod_q(f*h-g, q)
     print "log q = ", log_b(q, 2).n(precision)
+    print "log |f| = ", log_b(f.vector().norm(), 2).n(precision)
     print "log |(f,g)| = ", log_b(sqrt(f.vector().norm()^2 + g.vector().norm()^2), 2).n(precision)
     
     fprime = prod([tau(f) for tau in K.galois_group() if tau(z^r) == z^r])
     gprime = prod([tau(g) for tau in K.galois_group() if tau(z^r) == z^r])
     hprime = prod([tau(h) for tau in K.galois_group() if tau(z^r) == z^r])
 
+    print "%d * log |f| - log |f'| = %s" %(r, r*log_b(f.vector().norm(), 2).n(precision) - log_b(fprime.vector().norm(), 2).n(precision))
     print "log |(f', g')| = ", log_b(sqrt(fprime.vector().norm()^2 + gprime.vector().norm()^2), 2).n(precision)
 
     #(fprime, gprime) lies in the lattice \Lambda_hprime^q
