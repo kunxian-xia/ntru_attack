@@ -45,8 +45,8 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     mprime = m / r 
     nprime = euler_phi(mprime)
 
-    phim = a^n + 1    
     R.<a> = ZZ['a']
+    phim = a^n + 1  
     D = DiscreteGaussianDistributionIntegerSampler(sigma)
     
     while True:
