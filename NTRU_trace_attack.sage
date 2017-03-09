@@ -2,10 +2,7 @@
 map h <- NTRU(O_K, q) to tr_{K/L}(h)
 
 """
-def trace(t, G):
-    return sum( [tau(t) for tau in G] )
-def norm(t, G):
-    return prod( [tau(t) for tau in G] ) 
+
 
 def mod_q(t, q, z):
     n = len(t.list())
@@ -18,7 +15,7 @@ def trace_attack(m, q, r):
     G = K.galois_group()
 
     #subfield 
-    Gprime = [tau for tau in G if tau(z^r) == z^r]
+    
 
     #f, g
     f = R.random_element()
@@ -34,7 +31,7 @@ def trace_attack(m, q, r):
 
     fno = norm(f, Gprime)
     finv_no = norm(finv, Gprime)
-    fbar = prod([tau(f) for tau in Gprime[1:] ])
+    
 
     #print fbar*g
     print mod_q(trace(f, Gprime), r, z)
