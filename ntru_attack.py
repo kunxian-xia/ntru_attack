@@ -43,7 +43,8 @@ def NTRU_subfield(hprime, q, nprime, r):
     return IntegerLattice(block_matrix([ [1, Hprime], [0, q]]), lll_reduce=True)
 
 def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
-    K.<z> = CyclotomicField(m)
+    K = CyclotomicField(m, 'z')
+    z = K.gen()
     OK = K.ring_of_integers()
     G = K.galois_group()
 
