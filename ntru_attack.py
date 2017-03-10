@@ -4,6 +4,7 @@ from sage.stats.distributions.discrete_gaussian_integer import DiscreteGaussianD
 from sage.rings.arith import next_prime,euler_phi
 from sage.rings.number_field.number_field import CyclotomicField
 from sage.rings.integer_ring import IntegerRing
+from sage.rings.integer import Integer
 from sage.rings.polynomial.polynomial_ring_constructor import PolynomialRing
 from sage.matrix.constructor import matrix, block_matrix
 from sage.misc.functional import log
@@ -35,7 +36,7 @@ def NTRU(h, K, q):
     basis = K.integral_basis()
     H = h.matrix()
 
-    return IntegerLattice(block_matrix( [[1, H], [0, q]]), lll_reduce=True)
+    return IntegerLattice(block_matrix( [[Integer(1), H], [Integer(0), Integer(q)]]), lll_reduce=True)
 
 def NTRU_subfield(hprime, q, nprime, r):
     z = hprime.parent().gen()
@@ -47,7 +48,7 @@ def NTRU_subfield(hprime, q, nprime, r):
 
     Hprime = matrix(mat)
     
-    return IntegerLattice(block_matrix([ [1, Hprime], [0, q]]), lll_reduce=True)
+    return IntegerLattice(block_matrix([ [Integer(1), Hprime], [Integer(0), Integer(q)]]), lll_reduce=True)
 
 def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     K = CyclotomicField(m, 'z')
