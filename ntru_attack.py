@@ -130,6 +130,8 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     norm_xp = sum([coerce(Integer, norm_sv[i])*z**(r*i) for i in range(nprime)])
     tr_xp = sum([coerce(Integer, tr_sv[i])*z**(r*i) for i in range(nprime)])
 
+    print "Norm map: log |(x',y')| = ", log(norm_sv.norm(), 2).n(precision)
+    print "Trace map: log |(x', y')| = ", log(tr_sv.norm(), 2).n(precision)
     #test if xprime belongs to <fprime>
     mat = []
     for i in range(nprime):
