@@ -150,5 +150,4 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
 
 # f,g is a small polynomial: each coefficient is either 0,1,-1
 
-for _ in range(4):
-    attack(m=128, q = next_prime(2**10), r = 4, sigma=2, subfield_only=True)
+
