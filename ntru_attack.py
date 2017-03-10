@@ -8,6 +8,7 @@ from sage.rings.integer import Integer
 from sage.rings.polynomial.polynomial_ring_constructor import PolynomialRing
 from sage.matrix.constructor import matrix, block_matrix
 from sage.misc.functional import log,coerce
+from sage.rings.finite_rings.integer_mod import Mod
 from sage.misc.misc_c import prod
 from sage.functions.other import sqrt
 from almost_inverse import inverse
@@ -30,7 +31,7 @@ def mod_q(elem, q):
     z = elem.parent().gen()
     n = len(elem.list())
     
-    return sum([half(mod(coerce(Integer, elem[i]), q).lift()) * z**i for i in range(n)])
+    return sum([half(Mod(coerce(Integer, elem[i]), q).lift()) * z**i for i in range(n)])
 
 def NTRU(h, K, q):
     basis = K.integral_basis()
