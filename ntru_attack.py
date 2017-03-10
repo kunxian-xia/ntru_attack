@@ -56,7 +56,7 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     n = euler_phi(m)
     mprime = m / r 
     nprime = euler_phi(mprime)
-    Gprime = [tau for tau in G if tau(z^r) == z^r]
+    Gprime = [tau for tau in G if tau(z**r) == z**r]
 
     R = PolynomialRing(IntegerRing(),'a')
     a = R.gen()
@@ -147,4 +147,4 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
 # f,g is a small polynomial: each coefficient is either 0,1,-1
 
 for _ in range(4):
-    attack(m=128, q = next_prime(2^10), r = 4, sigma=2, subfield_only=True)
+    attack(m=128, q = next_prime(2**10), r = 4, sigma=2, subfield_only=True)
