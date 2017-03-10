@@ -1,6 +1,7 @@
 from sage.modules.free_module_integer import IntegerLattice
 from sage.stats.distributions.discrete_gaussian_polynomial import DiscreteGaussianDistributionPolynomialSampler
 from sage.stats.distributions.discrete_gaussian_integer import DiscreteGaussianDistributionIntegerSampler
+from sage.rings.arith import next_prime
 
 from almost_inverse import inverse
 
