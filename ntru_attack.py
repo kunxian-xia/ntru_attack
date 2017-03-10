@@ -5,7 +5,7 @@ from sage.rings.arith import next_prime,euler_phi
 from sage.rings.number_field.number_field import CyclotomicField
 from sage.rings.integer_ring import IntegerRing
 from sage.rings.polynomial.polynomial_ring_constructor import PolynomialRing
-from sage.misc.functional import log_b
+from sage.misc.functional import log
 from sage.functions.other import sqrt
 from almost_inverse import inverse
 
@@ -80,14 +80,14 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     #h = [g*f^{-1)]_q
     h = (g*f_inv).mod(q)
 
-    lognorm_f = log_b(f.vector().norm(), 2)
-    lognorm_g = log_b(g.vector().norm(), 2)
+    lognorm_f = log(f.vector().norm(), 2)
+    lognorm_g = log(g.vector().norm(), 2)
 
     print "f*h - g = %s" %  (f*h-g).mod(q)
-    print "log q = ", log_b(q, 2).n(precision)
+    print "log q = ", log(q, 2).n(precision)
     print "log |f| = %s, log |g| = %s" %( lognorm_f.n(precision), 
                                          lognorm_g.n(precision) )
-    print "log |(f,g)| = ", log_b(sqrt(f.vector().norm()**2 + g.vector().norm()**2), 2).n(precision)
+    print "log |(f,g)| = ", log(sqrt(f.vector().norm()**2 + g.vector().norm()**2), 2).n(precision)
     
     print "begin computing N(f), N(g), N(h), Tr(h), fbar"
     fprime = norm(f, Gprime)
@@ -97,12 +97,12 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     fbar = prod([tau(f) for tau in Gprime[1:] ])
     print "end computing N(f), N(g), N(h), Tr(h), fbar"
 
-    lognorm_fp = log_b(fprime.vector().norm(), 2)
-    lognorm_gp = log_b(gprime.vector().norm(), 2)
+    lognorm_fp = log(fprime.vector().norm(), 2)
+    lognorm_gp = log(gprime.vector().norm(), 2)
 
     print "%d * log |f| - log |f'| = %s" %(r, r * lognorm_f.n(precision) - lognorm_fp.n(precision))
-    print "log |(f', g')| = ", log_b(sqrt(fprime.vector().norm()**2 + gprime.vector().norm()**2), 2).n(precision)
-    print "log |N(f), Tr(g fbar)| = ", log_b( sqrt(fprime.vector().norm()**2 + 
+    print "log |(f', g')| = ", log(sqrt(fprime.vector().norm()**2 + gprime.vector().norm()**2), 2).n(precision)
+    print "log |N(f), Tr(g fbar)| = ", log( sqrt(fprime.vector().norm()**2 + 
                                                 trace(g*fbar, Gprime).vector().norm()**2), 2).n(precision)
     
     #(fprime, gprime) lies in the lattice \Lambda_hprime^q
@@ -113,7 +113,7 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
         ntru_full = NTRU(h, K, q)
         full_sv = ntru_full.shortest_vector()
     
-        print "log |v| = %s" % log_b(full_sv.norm(), 2).n(precision)
+        print "log |v| = %s" % log(full_sv.norm(), 2).n(precision)
 
     ntru_subfield = NTRU_subfield(hprime, q, nprime, r)
     ntru_trace_subfield = NTRU_subfield(htr, q, nprime, r)
@@ -141,8 +141,8 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     tr_x = tr_xp
     tr_y = mod_q(tr_x *h, q)
     
-    print "Norm map: log |(x,y)| = ", log_b( sqrt(norm_x.vector().norm()**2 + norm_y.vector().norm()**2), 2).n(precision)
-    print "Trace map: log |(x,y)| = ", log_b( sqrt(tr_x.vector().norm()**2 + tr_y.vector().norm()**2), 2).n(precision)
+    print "Norm map: log |(x,y)| = ", log( sqrt(norm_x.vector().norm()**2 + norm_y.vector().norm()**2), 2).n(precision)
+    print "Trace map: log |(x,y)| = ", log( sqrt(tr_x.vector().norm()**2 + tr_y.vector().norm()**2), 2).n(precision)
 
 # f,g is a small polynomial: each coefficient is either 0,1,-1
 
