@@ -22,7 +22,7 @@ def mod_q(elem, q):
     z = elem.parent().gen()
     n = len(elem.list())
     
-    return sum([half(mod(coerce(Integer, elem[i]), q).lift()) * z^i for i in range(n)])
+    return sum([half(mod(coerce(Integer, elem[i]), q).lift()) * z**i for i in range(n)])
 
 def NTRU(h, K, q):
     basis = K.integral_basis()
@@ -35,7 +35,7 @@ def NTRU_subfield(hprime, q, nprime, r):
 
     mat = []
     for i in range(nprime):
-        coordinate = (hprime * z^(r*i)).vector().list()
+        coordinate = (hprime * z**(r*i)).vector().list()
         mat.append( [coordinate[r*j] for j in range(nprime)] ) 
 
     Hprime = matrix(mat)
@@ -52,22 +52,23 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     nprime = euler_phi(mprime)
     Gprime = [tau for tau in G if tau(z^r) == z^r]
 
-    R.<a> = ZZ['a']
-    phim = a^n + 1  
+    R = PolynomialRing(ZZ,'a')
+    a = R.gen()
+    phim = a**n + 1  
     D = DiscreteGaussianDistributionIntegerSampler(sigma)
     
     print "sampling f,g"
     while True:
-        f = sum([D()*z^i for i in range(n)])
-        fx = sum([f[i]*a^i for i in range(n)])
+        f = sum([D()*z**i for i in range(n)])
+        fx = sum([f[i]*a**i for i in range(n)])
 
         res = inverse(fx, phim, q)
         if res[0]:
-            f_inv = sum([res[1][i]*z^i for i in range(n)])
+            f_inv = sum([res[1][i]*z**i for i in range(n)])
             print "f_inv * f = %s (mod %d)" %((f*f_inv).mod(q), q)
             break
   
-    g = sum([D()*z^i for i in range(n)])
+    g = sum([D()*z**i for i in range(n)])
     print "done sampling f, g"
 
     #h = [g*f^{-1)]_q
@@ -80,7 +81,7 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     print "log q = ", log_b(q, 2).n(precision)
     print "log |f| = %s, log |g| = %s" %( lognorm_f.n(precision), 
                                          lognorm_g.n(precision) )
-    print "log |(f,g)| = ", log_b(sqrt(f.vector().norm()^2 + g.vector().norm()^2), 2).n(precision)
+    print "log |(f,g)| = ", log_b(sqrt(f.vector().norm()**2 + g.vector().norm()**2), 2).n(precision)
     
     print "begin computing N(f), N(g), N(h), Tr(h), fbar"
     fprime = norm(f, Gprime)
@@ -94,9 +95,9 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     lognorm_gp = log_b(gprime.vector().norm(), 2)
 
     print "%d * log |f| - log |f'| = %s" %(r, r * lognorm_f.n(precision) - lognorm_fp.n(precision))
-    print "log |(f', g')| = ", log_b(sqrt(fprime.vector().norm()^2 + gprime.vector().norm()^2), 2).n(precision)
-    print "log |N(f), Tr(g fbar)| = ", log_b( sqrt(fprime.vector().norm()^2 + 
-                                                trace(g*fbar, Gprime).vector().norm()^2), 2).n(precision)
+    print "log |(f', g')| = ", log_b(sqrt(fprime.vector().norm()**2 + gprime.vector().norm()**2), 2).n(precision)
+    print "log |N(f), Tr(g fbar)| = ", log_b( sqrt(fprime.vector().norm()**2 + 
+                                                trace(g*fbar, Gprime).vector().norm()**2), 2).n(precision)
     
     #(fprime, gprime) lies in the lattice \Lambda_hprime^q
     print "f'*h' - g' = %s " % (hprime*fprime - gprime).mod(q)
@@ -116,13 +117,13 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     tr_sv = ntru_trace_subfield.shortest_vector()
     print "end computing Shortest Vector of subfield lattice"
 
-    norm_xp = sum([coerce(Integer, norm_sv[i])*z^(r*i) for i in range(nprime)])
-    tr_xp = sum([coerce(Integer, tr_sv[i])*z^(r*i) for i in range(nprime)])
+    norm_xp = sum([coerce(Integer, norm_sv[i])*z**(r*i) for i in range(nprime)])
+    tr_xp = sum([coerce(Integer, tr_sv[i])*z**(r*i) for i in range(nprime)])
 
     #test if xprime belongs to <fprime>
     mat = []
     for i in range(nprime):
-        coordinate = (fprime * z^(r*i)).vector().list()
+        coordinate = (fprime * z**(r*i)).vector().list()
         mat.append( [coordinate[r*j] for j in range(nprime)] ) 
     FL = IntegerLattice(mat)
     print norm_sv[:nprime] in FL
@@ -134,8 +135,8 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     tr_x = tr_xp
     tr_y = mod_q(tr_x *h, q)
     
-    print "Norm map: log |(x,y)| = ", log_b( sqrt(norm_x.vector().norm()^2 + norm_y.vector().norm()^2), 2).n(precision)
-    print "Trace map: log |(x,y)| = ", log_b( sqrt(tr_x.vector().norm()^2 + tr_y.vector().norm()^2), 2).n(precision)
+    print "Norm map: log |(x,y)| = ", log_b( sqrt(norm_x.vector().norm()**2 + norm_y.vector().norm()**2), 2).n(precision)
+    print "Trace map: log |(x,y)| = ", log_b( sqrt(tr_x.vector().norm()**2 + tr_y.vector().norm()**2), 2).n(precision)
 
 # f,g is a small polynomial: each coefficient is either 0,1,-1
 
