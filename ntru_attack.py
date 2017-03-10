@@ -1,8 +1,12 @@
 from sage.modules.free_module_integer import IntegerLattice
 from sage.stats.distributions.discrete_gaussian_polynomial import DiscreteGaussianDistributionPolynomialSampler
 from sage.stats.distributions.discrete_gaussian_integer import DiscreteGaussianDistributionIntegerSampler
-from sage.rings.arith import next_prime
-
+from sage.rings.arith import next_prime,euler_phi
+from sage.rings.number_field.number_field import CyclotomicField
+from sage.rings.integer_ring import IntegerRing
+from sage.rings.polynomial.polynomial_ring_constructor import PolynomialRing
+from sage.misc.functional import log_b
+from sage.functions.other import sqrt
 from almost_inverse import inverse
 
 precision = 20
@@ -54,7 +58,7 @@ def attack(m, q, r = 4, sigma = 3.0, subfield_only=False):
     nprime = euler_phi(mprime)
     Gprime = [tau for tau in G if tau(z^r) == z^r]
 
-    R = PolynomialRing(ZZ,'a')
+    R = PolynomialRing(IntegerRing(),'a')
     a = R.gen()
     phim = a**n + 1  
     D = DiscreteGaussianDistributionIntegerSampler(sigma)
