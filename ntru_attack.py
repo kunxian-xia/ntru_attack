@@ -6,6 +6,7 @@ from sage.rings.number_field.number_field import CyclotomicField
 from sage.rings.integer_ring import IntegerRing
 from sage.rings.polynomial.polynomial_ring_constructor import PolynomialRing
 from sage.misc.functional import log
+from sage.misc.misc_c import prod
 from sage.functions.other import sqrt
 from almost_inverse import inverse
 
